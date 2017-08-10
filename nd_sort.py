@@ -20,7 +20,7 @@ def nd_sort(pop_obj, n_sort):
         for i in range(n):
             if front_no[i] == np.inf:
                 dominated = False
-                for j in range(i - 1, 0, -1):
+                for j in range(i, 0, -1):
                     if front_no[j-1] == max_f_no:
                         m = 2
                         while m <= m_obj and new_obj[i][m - 1] >= new_obj[j][m - 1]:
