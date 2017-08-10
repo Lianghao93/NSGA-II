@@ -22,7 +22,10 @@ class Global(object):
         :return: the objective vectors
         """
         n = x.shape[0]
-        a = np.random.randn(self.M, self.d)
+        a = np.zeros((self.M, self.d))
+        for i in range(self.d):
+            for j in range(self.M):
+                a[i,j] = ((i+0.5)**(j-0.5))/(i+j+1.)
         obj = np.zeros((n, self.M))
         for i in range(n):
             for j in range(self.M):
