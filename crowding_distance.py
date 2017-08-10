@@ -8,7 +8,7 @@ def crowding_distance(pop_obj, front_no):
     front = np.unique(front_no)
     Fronts = front[front != np.inf]
     for f in range(len(Fronts)):
-        Front = np.nonzero(front_no == Fronts[f])[0]
+        Front = np.array([k for k in len(front_no) if front_no[k] == Fronts[f]])
         Fmax = pop_obj[Front, :].max(0)
         Fmin = pop_obj[Front, :].min(0)
         for i in range(m_obj):
