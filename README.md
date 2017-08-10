@@ -1,5 +1,5 @@
 # NSGA-II
-The implementation of NSGA-II [1] with Python
+The implementation of NSGA-II [1] with Python:
 
 1. nd_sort.py is the non-dominated sorting method using the efficient non-dominated sorting method in [2].
 
@@ -7,7 +7,12 @@ The implementation of NSGA-II [1] with Python
 
 3. crowding_distance.py is the density estimation method in NSGA-II, where the extreme solutions in each Pareto front are set to inf.
 
-4. GLOBAL.py involves the problem and parameters.
+4. environment_selection.py is the environmental selection procedure in NSGA-II.
+
+5. nsgaii.py is the main file.
+
+6. GLOBAL.py involves the problem and parameters.
+
 
 
 
