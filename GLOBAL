@@ -1,8 +1,6 @@
 class Global(object):
-    __qualname__ = 'Global'
-    __doc__ = '\n    The problem related parameters and settings of algorithm\n    '
     
-    def __init__(self, d, n, M, upper, lower = (1000, 100, 2, None, None)):
+    def __init__(self, d, n, M, upper, lower):
         self.d = d
         self.N = n
         self.M = M
@@ -25,7 +23,6 @@ class Global(object):
             f1 = np.dot(a1, np.power(x[(i, :)], 2).T)
             f2 = np.dot(a2, -(np.power(x[(i, :)], 3).T))
             obj = np.vstack((obj, np.hstack((f1, f2))))
-        
         return np.array(obj)
 
     
@@ -36,9 +33,7 @@ class Global(object):
         :return: individuals
         '''
         pop_obj = self.cost_fun(decs)
-        return [
-            decs,
-            pop_obj]
+        return [decs,pop_obj]
 
     
     def unit_population(self, population, offspring):
