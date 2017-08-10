@@ -28,7 +28,7 @@ class nsgaii(object):
         while self.eva>=0:
             fit = np.vstack((front_no, crowd_dis)).T
             mating_pool = tournament(2 ,Global.N, fit)
-            parent = [population[0][mating_pool], population[1][mating_pool]]
+            parent = [population[0][mating_pool,:], population[1][mating_pool,:]]
             offspring = Global.variation(parent[0])
             population = Global.unit_population(population, offspring)
             population = environment_selection(population, Global.N)
