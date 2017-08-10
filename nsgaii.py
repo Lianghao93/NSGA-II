@@ -38,15 +38,15 @@ class nsgaii(object):
         pop_obj = population[1]
         front_no, max_front = nd_sort(pop_obj, 1)
         non_dominated = pop_obj[front_no==1, :]
-        if Global.m == 2:
+        if Global.M == 2:
             plt.scatter(non_dominated[0, :], non_dominated[1, :])
-        elif Global.m == 3:
+        elif Global.M == 3:
             x,y,z = non_dominated[0, :], non_dominated[1, :],non_dominated[2, :]
             ax = plt.subplot(111,projection='3d') 
             ax.scatter(x, y,z,c='b') 
         else:
             for i in range(len(non_dominated)):
-                plt.plot(range(1, Global.m + 1), non_dominated[i, :])
+                plt.plot(range(1, Global.M + 1), non_dominated[i, :])
          
    
 
