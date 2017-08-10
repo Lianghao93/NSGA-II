@@ -26,7 +26,8 @@ class nsgaii(object):
         front_no, max_front = nd_sort(population[1], np.inf)
         crowd_dis = crowding_distance(population[1], front_no)
         while self.eva>=0:
-            mating_pool = tournament(2 ,Global.N, front_no, crowd_dis)
+            fit = np.vstack((front_no, crowd_dis)).T
+            mating_pool = tournament(2 ,Global.N, fit)
             parent = [population[0][mating_pool], population[1][mating_pool]]
             offspring = Global.variation(parent[0])
             population = Global.unit_population(population, offspring)
