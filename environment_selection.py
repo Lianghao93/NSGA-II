@@ -20,4 +20,4 @@ def environment_selection(population, N):
     delta_n = rank[: (N - next_label.sum())]
     next_label[last[delta_n]] = True
     next_pop = [population[0][next_label], population[1][next_label]]
-    return next_pop, front_no, crowd_dis
+    return next_pop, front_no[next_label], crowd_dis[next_label]
