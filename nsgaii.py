@@ -33,7 +33,7 @@ class nsgaii(object):
         front_no, max_front = nd_sort(population[1], np.inf)
         crowd_dis = crowding_distance(population[1], front_no)
         while self.eva >= 0:
-            fit = np.vstack((front_no, crowd_dis)).T
+            fit = np.vstack((front_no, -crowd_dis)).T
             mating_pool = tournament(2, Global.N, fit)
             pop_dec, pop_obj = population[0], population[1]
             parent = [pop_dec[mating_pool, :], pop_obj[mating_pool, :]]
