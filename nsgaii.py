@@ -19,14 +19,15 @@ class nsgaii(object):
     NSGA-II algorithm
     """
 
-    def __init__(self, decs=None, ite=100, eva=100 * 500):
+    def __init__(self, decs=None, n=100, ite=100, eva=100 * 500):
         self.decs = decs
+        self.N = n
         self.ite = ite
         self.eva = eva
 
     def run(self):
         if self.decs is None:
-            population = Global.initialize
+            population = Global.initialize(self.N)
         else:
             population = Global.individual(self.decs)
 
@@ -34,13 +35,13 @@ class nsgaii(object):
         crowd_dis = crowding_distance(population[1], front_no)
         while self.eva >= 0:
             fit = np.vstack((front_no, -crowd_dis)).T
-            mating_pool = tournament(2, Global.N, fit)
+            mating_pool = tournament(2, self.N, fit)
             pop_dec, pop_obj = population[0], population[1]
             parent = [pop_dec[mating_pool, :], pop_obj[mating_pool, :]]
             offspring = Global.variation(parent[0])
             population = Global.unit_population(population, offspring)
-            population, front_no, crowd_dis = environment_selection(population, Global.N)
-            self.eva = self.eva - Global.N
+            population, front_no, crowd_dis = environment_selection(population, self.N)
+            self.eva = self.eva - self.N
         return population
 
     def draw(self):
