@@ -10,6 +10,7 @@ from GLOBAL import Global
 
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import time
 
 Global = Global(M=3)
 
@@ -26,11 +27,13 @@ class nsgaii(object):
         self.eva = eva
 
     def run(self):
+        start = time.clock()
         if self.decs is None:
             population = Global.initialize(self.N)
         else:
             population = Global.individual(self.decs)
-
+            evaluation = self.eva
+        self.eva = self.eva - self.N
         front_no, max_front = nd_sort(population[1], np.inf)
         crowd_dis = crowding_distance(population[1], front_no)
         while self.eva >= 0:
@@ -42,6 +45,9 @@ class nsgaii(object):
             population = Global.unit_population(population, offspring)
             population, front_no, crowd_dis = environment_selection(population, self.N)
             self.eva = self.eva - self.N
+            if self.eva%(10*evaluation//self.ite) == 0:
+                end = time.clock()
+                print('Runtime %10.2f, percentage %s %%'%((end-start),100*(evaluation-self.eva)/self.eva))
         return population
 
     def draw(self):
