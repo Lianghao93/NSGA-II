@@ -36,17 +36,17 @@ class nsgaii(object):
         crowd_dis = crowding_distance(population[1], front_no)
         evaluation = self.eva
         while self.eva >= 0:
-            fit = np.vstack((front_no, -crowd_dis)).T
-            mating_pool = tournament(2, self.N, fit)
+            fit = np.vstack((front_no, crowd_dis)).T
+            mating_pool = tournament(2, Global.N, fit)
             pop_dec, pop_obj = population[0], population[1]
             parent = [pop_dec[mating_pool, :], pop_obj[mating_pool, :]]
             offspring = Global.variation(parent[0])
             population = Global.unit_population(population, offspring)
-            population, front_no, crowd_dis = environment_selection(population, self.N)
+            population, front_no, crowd_dis = environment_selection(population, Global.N)
             self.eva = self.eva - Global.N
-            if self.eva%(10*evaluation//self.ite) == 0:
+            if self.eva%(10*evaluation/self.ite) == 0:
                 end = time.clock()
-                print('Runtime %10.2f, percentage %s %%'%((end-start),100*(evaluation-self.eva)/evaluation))
+                print('Running time %10.2f, percentage %s'%(end-start,100*(evaluation-self.eva)/evaluation))
         return population
 
     def draw(self):
@@ -65,6 +65,6 @@ class nsgaii(object):
                 plt.plot(range(1, Global.M + 1), non_dominated[i, :])
 
 
-alg = nsgaii()
-b=alg.draw()
+a = nsgaii()
+b=a.draw()
 plt.show()
