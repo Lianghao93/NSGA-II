@@ -2,14 +2,13 @@
 # encoding: utf-8
 import numpy as np
 
-
 class Global(object):
     """
     The problem related parameters and genetic operations
     """
-
-    def __init__(self, d, M, upper, lower):
+    def __init__(self, d=10, n=100, M=2, lower=-np.ones((1, 10)), upper=np.ones((1, 10))):
         self.d = d
+        self.N = n
         self.M = M
         self.upper = upper
         self.lower = lower
@@ -24,7 +23,7 @@ class Global(object):
         a = np.zeros((self.M, self.d))
         for i in range(self.d):
             for j in range(self.M):
-                a[i,j] = ((i+0.5)**(j-0.5))/(i+j+1.)
+                a[j,i] = ((i+0.5)**(j-0.5))/(i+j+1.)
         obj = np.zeros((n, self.M))
         for i in range(n):
             for j in range(self.M):
@@ -52,12 +51,13 @@ class Global(object):
             np.vstack((population[0], offspring[0])),
             np.vstack((population[1], offspring[1]))]
 
-    def initialize(self,n):
+    @property
+    def initialize(self):
         """
         initialize the population
         :return: the initial population
         """
-        pop_dec = np.random.random((n, self.d)) * (self.upper - self.lower) + self.lower
+        pop_dec = np.random.random((self.N, self.d)) * (self.upper - self.lower) + self.lower
         return self.individual(pop_dec)
 
     def variation(self, pop_dec):
