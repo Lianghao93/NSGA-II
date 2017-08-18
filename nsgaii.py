@@ -20,22 +20,21 @@ class nsgaii(object):
     NSGA-II algorithm
     """
 
-    def __init__(self, decs=None, n=100, ite=100, eva=100 * 500):
+    def __init__(self, decs=None, ite=100, eva=100 * 500):
         self.decs = decs
-        self.N = n
         self.ite = ite
         self.eva = eva
 
     def run(self):
         start = time.clock()
         if self.decs is None:
-            population = Global.initialize(self.N)
+            population = Global.initialize
         else:
             population = Global.individual(self.decs)
-            evaluation = self.eva
-        self.eva = self.eva - self.N
+
         front_no, max_front = nd_sort(population[1], np.inf)
         crowd_dis = crowding_distance(population[1], front_no)
+        evaluation = self.eva
         while self.eva >= 0:
             fit = np.vstack((front_no, -crowd_dis)).T
             mating_pool = tournament(2, self.N, fit)
@@ -44,10 +43,10 @@ class nsgaii(object):
             offspring = Global.variation(parent[0])
             population = Global.unit_population(population, offspring)
             population, front_no, crowd_dis = environment_selection(population, self.N)
-            self.eva = self.eva - self.N
+            self.eva = self.eva - Global.N
             if self.eva%(10*evaluation//self.ite) == 0:
                 end = time.clock()
-                print('Runtime %10.2f, percentage %s %%'%((end-start),100*(evaluation-self.eva)/self.eva))
+                print('Runtime %10.2f, percentage %s %%'%((end-start),100*(evaluation-self.eva)/evaluation))
         return population
 
     def draw(self):
@@ -68,3 +67,4 @@ class nsgaii(object):
 
 alg = nsgaii()
 b=alg.draw()
+plt.show()
