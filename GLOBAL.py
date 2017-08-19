@@ -39,19 +39,6 @@ class Global(object):
         pop_obj = self.cost_fun(decs)
         return [decs, pop_obj]
 
-    @staticmethod
-    def unit_population(population, offspring):
-        """
-        Combine two population
-        :param population: parent population
-        :param offspring: offspring population
-        :return:
-        """
-        return [
-            np.vstack((population[0], offspring[0])),
-            np.vstack((population[1], offspring[1]))]
-
-    @property
     def initialize(self):
         """
         initialize the population
@@ -60,11 +47,12 @@ class Global(object):
         pop_dec = np.random.random((self.N, self.d)) * (self.upper - self.lower) + self.lower
         return self.individual(pop_dec)
 
-    def variation(self, pop_dec):
+    def variation(self, pop_dec, boundary = None):
         """
         Generate offspring individuals
+        :param boundary: lower and upper boundary of pop_dec once d != self.d
         :param pop_dec: decision vectors
-        :return:
+        :return: 
         """
         pro_c = 1
         dis_c = 20
@@ -75,7 +63,7 @@ class Global(object):
         parent_1_dec = pop_dec[:n // 2, :]
         parent_2_dec = pop_dec[n // 2:, :]
         beta = np.zeros((n // 2, d))
-        mu = np.zeros((n // 2, d))
+        mu = np.random.random((n // 2, d))
         beta[mu <= 0.5] = np.power(2 * mu[mu <= 0.5], 1 / (dis_c + 1))
         beta[mu > 0.5] = np.power(2 * mu[mu > 0.5], -1 / (dis_c + 1))
         beta = beta * -1 * np.random.randint(2, size=(n // 2, d))
@@ -98,5 +86,8 @@ class Global(object):
                                (1. - np.power(
                                    2. * (1. - mu[temp]) + 2. * (mu[temp] - 0.5) * np.power(1. - norm, dis_m + 1.),
                                    1. / (dis_m + 1.)))
-        offspring_dec = np.maximum(np.minimum(offspring_dec, upper), lower)
-        return self.individual(offspring_dec)
+        if boundary is None:
+            offspring_dec = np.maximum(np.minimum(offspring_dec, upper), lower)
+        else:
+            offspring_dec = np.maximum(np.minimum(offspring_dec, np.tile(boundary[0], (n, 1))), np.tile(boundary[1], (n, 1)))
+        return offspring_dec
