@@ -66,7 +66,7 @@ class Global(object):
         mu = np.random.random((n // 2, d))
         beta[mu <= 0.5] = np.power(2 * mu[mu <= 0.5], 1 / (dis_c + 1))
         beta[mu > 0.5] = np.power(2 * mu[mu > 0.5], -1 / (dis_c + 1))
-        beta = beta * -1 * np.random.randint(2, size=(n // 2, d))
+        beta = beta * ((-1)** np.random.randint(2, size=(n // 2, d)))
         beta[np.random.random((n // 2, d)) < 0.5] = 1
         beta[np.tile(np.random.random((n // 2, 1)) > pro_c, (1, d))] = 1
         offspring_dec = np.vstack(((parent_1_dec + parent_2_dec) / 2 + beta * (parent_1_dec - parent_2_dec) / 2,
