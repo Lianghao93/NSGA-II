@@ -74,8 +74,11 @@ class Global(object):
         site = np.random.random((n, d)) < pro_m / d
         mu = np.random.random((n, d))
         temp = site & (mu <= 0.5)
-        lower = np.tile(self.lower, (n, 1))
-        upper = np.tile(self.upper, (n, 1))
+        if boundary is None:
+            lower, upper = np.tile(self.lower, (n, 1)), np.tile(self.upper, (n, 1))
+        else:
+            lower, upper = np.tile(boundary[0], (n, 1)), np.tile(boundary[1], (n, 1))
+
         norm = (offspring_dec[temp] - lower[temp]) / (upper[temp] - lower[temp])
         offspring_dec[temp] += (upper[temp] - lower[temp]) * \
                                (np.power(2. * mu[temp] + (1. - 2. * mu[temp]) * np.power(1. - norm, dis_m + 1.),
@@ -86,8 +89,5 @@ class Global(object):
                                (1. - np.power(
                                    2. * (1. - mu[temp]) + 2. * (mu[temp] - 0.5) * np.power(1. - norm, dis_m + 1.),
                                    1. / (dis_m + 1.)))
-        if boundary is None:
-            offspring_dec = np.maximum(np.minimum(offspring_dec, upper), lower)
-        else:
-            offspring_dec = np.maximum(np.minimum(offspring_dec, np.tile(boundary[0], (n, 1))), np.tile(boundary[1], (n, 1)))
+        offspring_dec = np.maximum(np.minimum(offspring_dec, upper), lower)
         return offspring_dec
