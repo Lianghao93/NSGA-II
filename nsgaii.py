@@ -28,7 +28,7 @@ class nsgaii(object):
     def run(self):
         start = time.clock()
         if self.decs is None:
-            population = Global.initialize
+            population = Global.initialize()
         else:
             population = Global.individual(self.decs)
 
@@ -41,7 +41,7 @@ class nsgaii(object):
             pop_dec, pop_obj = population[0], population[1]
             parent = [pop_dec[mating_pool, :], pop_obj[mating_pool, :]]
             offspring = Global.variation(parent[0])
-            population = Global.unit_population(population, offspring)
+            population = [np.vstack((population[0], Global.individual(offspring)[0])), np.vstack((population[1], Global.individual(offspring)[1]))]
             population, front_no, crowd_dis = environment_selection(population, Global.N)
             self.eva = self.eva - Global.N
             if self.eva%(10*evaluation/self.ite) == 0:
