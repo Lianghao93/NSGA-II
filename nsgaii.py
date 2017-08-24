@@ -40,9 +40,9 @@ class nsgaii(object):
             mating_pool = tournament(2, Global.N, fit)
             pop_dec, pop_obj = population[0], population[1]
             parent = [pop_dec[mating_pool, :], pop_obj[mating_pool, :]]
-            offspring = Global.variation(parent[0])
+            offspring = Global.variation(parent[0],boundary=(Global.lower,Global.upper))
             population = [np.vstack((population[0], Global.individual(offspring)[0])), np.vstack((population[1], Global.individual(offspring)[1]))]
-            population, front_no, crowd_dis = environment_selection(population, Global.N)
+            population, front_no, crowd_dis,_ = environment_selection(population, Global.N)
             self.eva = self.eva - Global.N
             if self.eva%(10*evaluation/self.ite) == 0:
                 end = time.clock()
