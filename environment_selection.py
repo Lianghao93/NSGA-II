@@ -13,11 +13,17 @@ def environment_selection(population, N):
     :return: next generation population
     '''
     front_no, max_front = nd_sort(population[1], N)
-    next_label = front_no < max_front
+    next_label = [False for i in range(front_no.size)]
+    for i in range(front_no.size):
+        if front_no[i] < max_front:
+            next_label[i] = True
     crowd_dis = crowding_distance(population[1], front_no)
-    last = np.array([i for i in range(len(front_no)) if front_no[i]==max_front])
+    last = [i for i in range(len(front_no)) if front_no[i]==max_front]
     rank = np.argsort(-crowd_dis[last])
-    delta_n = rank[: (N - next_label.sum())]
-    next_label[last[delta_n]] = True
-    next_pop = [population[0][next_label], population[1][next_label]]
-    return next_pop, front_no[next_label], crowd_dis[next_label]
+    delta_n = rank[: (N - int(np.sum(next_label)))]
+    rest = [last[i] for i in delta_n]
+    for i in rest:
+        next_label[i] = True
+    index = np.array([i for i in range(len(next_label)) if next_label[i]])
+    next_pop = [population[0][index,:], population[1][index,:]]
+    return next_pop, front_no[index], crowd_dis[index],index
